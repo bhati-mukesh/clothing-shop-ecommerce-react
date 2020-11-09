@@ -27,7 +27,6 @@ const Directory = () => {
       imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
       size: "large",
       id: 4,
-      size: "large",
       linkUrl: "shop/womens",
     },
     {
@@ -35,19 +34,16 @@ const Directory = () => {
       imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
       size: "large",
       id: 5,
-      size: "large",
       linkUrl: "shop/mens",
     },
   ]);
   return (
     <div className="directory-menu">
-      {sections.map((section) => {
+      {sections.map(({id, ...othersSectionProps }) => {
         return (
           <MenuItem
-            key={section.id}
-            title={section.title}
-            imageUrl={section.imageUrl}
-            size={section.size}
+            key={id}
+            {...othersSectionProps}
           />
         );
       })}
