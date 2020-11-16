@@ -19,11 +19,12 @@ class SignIn extends Component {
       event.preventDefault();
       const {email,password} = this.state
       try{
-        await auth.signInWithEmailAndPassword(email,password);
+        const res = await auth.signInWithEmailAndPassword(email,password);
          this.setState({
           email: "",
           password: "",
         })
+        console.log(res)
       }catch(error){
         console.log(error)
       }
