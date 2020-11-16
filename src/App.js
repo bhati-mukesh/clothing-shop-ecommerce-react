@@ -1,6 +1,6 @@
 import './App.css';
 import HomePage from './pages/home/HomePage';
-import {Route,Switch} from 'react-router-dom'
+import {Route,Switch,Redirect} from 'react-router-dom'
 import Shop from './pages/shop/Shop';
 import Header from './components/header/Header';
 import SignInUp from './pages/sign-in-and-sign-up/SignInUp';
@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux'
 import { setCurrentUser } from './redux/user/userAction'
 
-function App({setCurrentUser}) {
+function App({setCurrentUser,currentUser}) {
   let unSubscribeFormAuth = null
   useEffect(()=>{
     unSubscribeFormAuth = auth.onAuthStateChanged(async userAuth=>{
@@ -37,14 +37,19 @@ function App({setCurrentUser}) {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/shop" component={Shop} />
-        <Route exact path="/signin" component={SignInUp} />
+        <Route exact path="/signin"  render={
+          ()=> currentUser ? (<Redirect to="/" />) : <SignInUp /> } />
       </Switch>
     </div>
   );
 }
 
+const mapStateToProps = ({user})=>({
+  currentUser : user.currentUser
+})
+
 const mapDispatchToProps = (dispatch)=>({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 
-export default connect(null,mapDispatchToProps)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);
